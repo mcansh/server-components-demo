@@ -26,10 +26,10 @@ const {pipeToNodeWritable} = require('react-server-dom-webpack/writer');
 const path = require('path');
 const {Pool} = require('pg');
 const React = require('react');
-const ReactApp = require('../src/App.server').default;
+const {App: ReactApp} = require('../dist/App.server');
 
 // Don't keep credentials in the source tree in a real app!
-const pool = new Pool(require('../credentials.json'));
+const pool = new Pool(require('../dist/credentials.json'));
 
 const PORT = 4000;
 const app = express();

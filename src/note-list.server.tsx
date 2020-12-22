@@ -6,12 +6,16 @@
  *
  */
 
-import {fetch} from 'react-fetch';
+// import {fetch} from 'react-fetch';
 
 import {db} from './db.server';
-import SidebarNote from './SidebarNote';
+import SidebarNote from './sidebar-note';
 
-export default function NoteList({searchText}) {
+interface Props {
+  searchText: string;
+}
+
+export default function NoteList({searchText}: Props) {
   // const notes = fetch('http://localhost:4000/notes').json();
 
   // WARNING: This is for demo purposes only.
@@ -27,7 +31,7 @@ export default function NoteList({searchText}) {
 
   return notes.length > 0 ? (
     <ul className="notes-list">
-      {notes.map((note) => (
+      {notes.map((note: any) => (
         <li key={note.id}>
           <SidebarNote note={note} />
         </li>

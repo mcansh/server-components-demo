@@ -6,7 +6,11 @@
  *
  */
 
-export default function Spinner({active = true}) {
+interface Props {
+  active?: boolean;
+}
+
+export default function Spinner({active = true}: Props) {
   return (
     <div
       className={['spinner', active && 'spinner--active'].join(' ')}

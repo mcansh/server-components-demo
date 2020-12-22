@@ -6,9 +6,13 @@
  *
  */
 
-import TextWithMarkdown from './TextWithMarkdown';
+import TextWithMarkdown from './text-with-markdown';
 
-export default function NotePreview({body}) {
+interface Props {
+  body: string;
+}
+
+export default function NotePreview({body}: Props) {
   return (
     <div className="note-preview">
       <TextWithMarkdown text={body} />

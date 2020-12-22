@@ -7,16 +7,21 @@
  */
 
 import {fetch} from 'react-fetch';
-import {readFile} from 'react-fs';
+// import {readFile} from 'react-fs';
 import {format} from 'date-fns';
-import path from 'path';
+// import path from 'path';
 
-import {db} from './db.server';
-import NotePreview from './NotePreview';
-import EditButton from './EditButton.client';
-import NoteEditor from './NoteEditor.client';
+// import {db} from './db.server';
+import NotePreview from './note-preview';
+import EditButton from './edit-button.client';
+import NoteEditor from './note-editor.client';
 
-export default function Note({selectedId, isEditing}) {
+interface Props {
+  selectedId: number | null;
+  isEditing: boolean;
+}
+
+export default function Note({selectedId, isEditing}: Props) {
   const note =
     selectedId != null
       ? fetch(`http://localhost:4000/notes/${selectedId}`).json()

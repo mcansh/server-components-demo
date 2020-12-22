@@ -7,7 +7,9 @@
  */
 
 import {Pool} from 'react-pg';
-import credentials from '../credentials.json';
+import credentials from './credentials.json';
 
 // Don't keep credentials in the source tree in a real app!
-export const db = new Pool(credentials);
+const db = new Pool(credentials);
+
+export {db};

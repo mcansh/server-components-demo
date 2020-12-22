@@ -6,14 +6,21 @@
  *
  */
 
+// @ts-expect-error
 import {useState, unstable_useTransition} from 'react';
 import {createFromReadableStream} from 'react-server-dom-webpack';
 
-import NotePreview from './NotePreview';
-import {useRefresh} from './Cache.client';
-import {useLocation} from './LocationContext.client';
+import NotePreview from './note-preview';
+import {useRefresh} from './cache.client';
+import {Location, useLocation} from './location-context.client';
 
-export default function NoteEditor({noteId, initialTitle, initialBody}) {
+interface Props {
+  noteId: number | null;
+  initialTitle: string;
+  initialBody: string;
+}
+
+export default function NoteEditor({noteId, initialTitle, initialBody}: Props) {
   const refresh = useRefresh();
   const [title, setTitle] = useState(initialTitle);
   const [body, setBody] = useState(initialBody);
@@ -36,7 +43,9 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
       searchText: location.searchText,
     };
     const response = await saveNote(payload, requestedLocation);
-    navigate(response);
+    if (response) {
+      navigate(response);
+    }
   }
 
   async function handleDelete() {
@@ -47,15 +56,17 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
       searchText: location.searchText,
     };
     const response = await deleteNote(payload, requestedLocation);
-    navigate(response);
+    if (response) {
+      navigate(response);
+    }
   }
 
-  function navigate(response) {
+  function navigate(response: Response) {
     const cacheKey = response.headers.get('X-Location');
-    const nextLocation = JSON.parse(cacheKey);
+    const nextLocation = JSON.parse(cacheKey!);
     const seededResponse = createFromReadableStream(response.body);
     startNavigating(() => {
-      refresh(cacheKey, seededResponse);
+      refresh(cacheKey!, seededResponse);
       setLocation(nextLocation);
     });
   }
@@ -126,13 +137,26 @@ export default function NoteEditor({noteId, initialTitle, initialBody}) {
           Preview
         </div>
         <h1 className="note-title">{title}</h1>
-        <NotePreview title={title} body={body} />
+        <NotePreview body={body} />
       </div>
     </div>
   );
 }
 
-function useMutation({endpoint, method}) {
+interface MutationOptions {
+  endpoint: string;
+  method: 'PUT' | 'POST' | 'DELETE';
+}
+
+type MutationReturnValue = [
+  boolean,
+  (
+    payload: Object,
+    requestedLocation: Location
+  ) => Promise<Response | undefined>
+];
+
+function useMutation({endpoint, method}: MutationOptions): MutationReturnValue {
   const [isSaving, setIsSaving] = useState(false);
   const [didError, setDidError] = useState(false);
   const [error, setError] = useState(null);
@@ -141,7 +165,7 @@ function useMutation({endpoint, method}) {
     throw error;
   }
 
-  async function performMutation(payload, requestedLocation) {
+  async function performMutation(payload: Object, requestedLocation: Location) {
     setIsSaving(true);
     try {
       const response = await fetch(

@@ -6,23 +6,35 @@
  *
  */
 
+// @ts-expect-error
 import {useState, useRef, useEffect, unstable_useTransition} from 'react';
 
-import {useLocation} from './LocationContext.client';
+import {useLocation} from './location-context.client';
 
-export default function SidebarNote({id, title, children, expandedChildren}) {
+interface Props {
+  id: number | null;
+  title: string;
+  expandedChildren: React.ReactNode;
+}
+
+const SidebarNote: React.FC<Props> = ({
+  id,
+  title,
+  children,
+  expandedChildren,
+}) => {
   const [location, setLocation] = useLocation();
   const [startTransition, isPending] = unstable_useTransition();
   const [isExpanded, setIsExpanded] = useState(false);
   const isActive = id === location.selectedId;
 
   // Animate after title is edited.
-  const itemRef = useRef(null);
+  const itemRef = useRef<HTMLDivElement>(null);
   const prevTitleRef = useRef(title);
   useEffect(() => {
     if (title !== prevTitleRef.current) {
       prevTitleRef.current = title;
-      itemRef.current.classList.add('flash');
+      itemRef.current?.classList.add('flash');
     }
   }, [title]);
 
@@ -30,7 +42,7 @@ export default function SidebarNote({id, title, children, expandedChildren}) {
     <div
       ref={itemRef}
       onAnimationEnd={() => {
-        itemRef.current.classList.remove('flash');
+        itemRef.current?.classList.remove('flash');
       }}
       className={[
         'sidebar-note-list-item',
@@ -80,4 +92,6 @@ export default function SidebarNote({id, title, children, expandedChildren}) {
       {isExpanded && expandedChildren}
     </div>
   );
-}
+};
+
+export default SidebarNote;

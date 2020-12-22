@@ -9,10 +9,14 @@
 import {useState, Suspense} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 
-import {useServerResponse} from './Cache.client';
-import {LocationContext} from './LocationContext.client';
+import {useServerResponse} from './cache.client';
+import {Location, LocationContext} from './location-context.client';
 
-export default function Root({initialCache}) {
+interface RootProps {
+  initialCache: any;
+}
+
+export default function Root({initialCache}: RootProps) {
   return (
     <Suspense fallback={null}>
       <ErrorBoundary FallbackComponent={Error}>
@@ -23,7 +27,7 @@ export default function Root({initialCache}) {
 }
 
 function Content() {
-  const [location, setLocation] = useState({
+  const [location, setLocation] = useState<Location>({
     selectedId: null,
     isEditing: false,
     searchText: '',
@@ -36,7 +40,11 @@ function Content() {
   );
 }
 
-function Error({error}) {
+interface ErrorProps {
+  error: Error;
+}
+
+function Error({error}: ErrorProps) {
   return (
     <div>
       <h1>Application Error</h1>

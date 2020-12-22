@@ -9,13 +9,19 @@
 import {Suspense} from 'react';
 
 import Note from './Note.server';
-import NoteList from './NoteList.server';
-import EditButton from './EditButton.client';
-import SearchField from './SearchField.client';
-import NoteSkeleton from './NoteSkeleton';
-import NoteListSkeleton from './NoteListSkeleton';
+import NoteList from './note-list.server';
+import EditButton from './edit-button.client';
+import SearchField from './search-field.client';
+import NoteSkeleton from './note-skeleton';
+import NoteListSkeleton from './note-list-skeleton';
 
-export default function App({selectedId, isEditing, searchText}) {
+interface Props {
+  selectedId: string;
+  isEditing: boolean;
+  searchText: string;
+}
+
+function App({selectedId, isEditing, searchText}: Props) {
   return (
     <div className="main">
       <section className="col sidebar">
@@ -48,3 +54,5 @@ export default function App({selectedId, isEditing, searchText}) {
     </div>
   );
 }
+
+export {App};

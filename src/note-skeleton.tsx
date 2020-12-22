@@ -70,6 +70,10 @@ function NotePreviewSkeleton() {
   );
 }
 
-export default function NoteSkeleton({isEditing}) {
+interface NoteSkeletonProps {
+  isEditing: boolean;
+}
+
+export default function NoteSkeleton({isEditing}: NoteSkeletonProps) {
   return isEditing ? <NoteEditorSkeleton /> : <NotePreviewSkeleton />;
 }

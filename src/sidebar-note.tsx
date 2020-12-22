@@ -10,9 +10,13 @@ import {format, isToday} from 'date-fns';
 import excerpts from 'excerpts';
 import marked from 'marked';
 
-import ClientSidebarNote from './SidebarNote.client';
+import ClientSidebarNote from './sidebar-note.client';
 
-export default function SidebarNote({note}) {
+interface Props {
+  note: any;
+}
+
+export default function SidebarNote({note}: Props) {
   const updatedAt = new Date(note.updated_at);
   const lastUpdatedAt = isToday(updatedAt)
     ? format(updatedAt, 'h:mm bb')

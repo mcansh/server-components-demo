@@ -34,10 +34,17 @@
     "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
-    "prettier": "1.19.1"
+    "@types/marked": "1.2.1",
+    "@types/node": "14.14.13",
+    "@types/react": "17.0.0",
+    "@types/react-dom": "17.0.0",
+    "@types/sanitize-html": "1.27.0",
+    "prettier": "1.19.1",
+    "typescript": "4.1.3"
   },
   "scripts": {
-    "start": "concurrently \"npm run server:dev\" \"npm run bundler:dev\"",
+    "prestart": "tsc -b",
+    "start": "concurrently \"tsc -b -w --preserveWatchOutput\" \"npm run server:dev\" \"npm run bundler:dev\"",
     "start:prod": "concurrently \"npm run server:prod\" \"npm run bundler:prod\"",
     "server:dev": "NODE_ENV=development nodemon -- --conditions=react-server server",
     "server:prod": "NODE_ENV=production nodemon -- --conditions=react-server server",

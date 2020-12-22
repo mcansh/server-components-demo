@@ -6,8 +6,9 @@
  *
  */
 
+// @ts-expect-error
 import {unstable_createRoot} from 'react-dom';
-import Root from './Root.client';
+import Root from './root.client';
 
 const initialCache = new Map();
 const root = unstable_createRoot(document.getElementById('root'));

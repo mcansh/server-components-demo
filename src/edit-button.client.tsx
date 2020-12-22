@@ -6,11 +6,16 @@
  *
  */
 
+// @ts-expect-error
 import {unstable_useTransition} from 'react';
 
-import {useLocation} from './LocationContext.client';
+import {useLocation} from './location-context.client';
 
-export default function EditButton({noteId, children}) {
+interface Props {
+  noteId: number | null;
+}
+
+const EditButton: React.FC<Props> = ({noteId, children}) => {
   const [, setLocation] = useLocation();
   const [startTransition, isPending] = unstable_useTransition();
   const isDraft = noteId == null;
@@ -34,4 +39,6 @@ export default function EditButton({noteId, children}) {
       {children}
     </button>
   );
-}
+};
+
+export default EditButton;

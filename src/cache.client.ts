@@ -6,21 +6,23 @@
  *
  */
 
+// @ts-expect-error
 import {unstable_getCacheForType, unstable_useCacheRefresh} from 'react';
 import {createFromFetch} from 'react-server-dom-webpack';
+import type {Location} from './location-context.client';
 
 function createResponseCache() {
   return new Map();
 }
 
-export function useRefresh() {
+function useRefresh() {
   const refreshCache = unstable_useCacheRefresh();
-  return function refresh(key, seededResponse) {
+  return function refresh(key: string, seededResponse: any) {
     refreshCache(createResponseCache, new Map([[key, seededResponse]]));
   };
 }
 
-export function useServerResponse(location) {
+function useServerResponse(location: Location) {
   const key = JSON.stringify(location);
   const cache = unstable_getCacheForType(createResponseCache);
   let response = cache.get(key);
@@ -33,3 +35,5 @@ export function useServerResponse(location) {
   cache.set(key, response);
   return response;
 }
+
+export {useRefresh, useServerResponse}

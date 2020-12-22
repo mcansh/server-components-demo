@@ -23,7 +23,11 @@ const allowedAttributes = Object.assign(
   }
 );
 
-export default function TextWithMarkdown({text}) {
+interface Props {
+  text: string;
+}
+
+export default function TextWithMarkdown({text}: Props) {
   return (
     <div
       className="text-with-markdown"

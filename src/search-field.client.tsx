@@ -6,10 +6,11 @@
  *
  */
 
+// @ts-expect-error
 import {useState, unstable_useTransition} from 'react';
 
-import {useLocation} from './LocationContext.client';
-import Spinner from './Spinner';
+import {useLocation} from './location-context.client';
+import Spinner from './spinner';
 
 export default function SearchField() {
   const [text, setText] = useState('');
